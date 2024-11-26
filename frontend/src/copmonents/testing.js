@@ -3,10 +3,22 @@ import axios from 'axios';
 
 // Helper function to format duration in MM:SS format
 const formatDuration = (seconds) => {
+    console.log("duration: " + seconds)
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
     return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
 };
+
+function parseDuration(duration) {
+    const [minutes, seconds] = duration.split(':'); // Split the string by colon
+    const parsedMinutes = parseInt(minutes, 10); // Convert minutes to an integer
+    const parsedSeconds = parseFloat(seconds); // Convert seconds to a float
+
+    // Calculate total seconds (you can also calculate total minutes if needed)
+    const totalSeconds = parsedMinutes * 60 + parsedSeconds;
+
+    return totalSeconds;
+}
 
 function Testing() {
     const [podcasts, setPodcasts] = useState([]);
@@ -23,8 +35,17 @@ function Testing() {
                     if (podcast.S3Url && podcast.S3Url.endsWith('/')) {
                         podcast.S3Url = podcast.S3Url.slice(0, -1);
                     }
+                    const duration = parseDuration(podcast.duration); // Converts the string to a number
+
+                    // If the string is not a valid number, set a fallback value (e.g., 0)
+                    if (isNaN(duration)) {
+                        // Set duration to a default value (e.g., 0) if it's invalid
+                        duration = 0;
+                    }
+                    podcast.duration = duration
                     return podcast;
                 });
+                console.log(response)
     
                 // Sort podcasts by timestamp in descending order
                 const sortedPodcasts = podcastsData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
@@ -34,11 +55,15 @@ function Testing() {
     
                 // Initialize the state arrays for the audio players
                 setCurrentTime(new Array(sortedPodcasts.length).fill(0));
-                setDuration(new Array(sortedPodcasts.length).fill(0));
+    
+                // Set duration array with actual durations from the API response
+                setDuration(sortedPodcasts.map(podcast => podcast.duration || 0));
+    
                 setIsPlaying(new Array(sortedPodcasts.length).fill(false));
             })
             .catch(err => console.error(err));
     }, []);
+    
     
 
     // Function to get the MP3 duration
