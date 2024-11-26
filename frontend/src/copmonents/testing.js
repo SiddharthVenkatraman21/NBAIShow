@@ -129,39 +129,39 @@ function Testing() {
           <div className="flex-1 flex flex-col">
               {/* Upper section: Latest Podcast */}
               {podcasts.length > 0 && (
-  <div 
-    className="flex bg-gray-800 text-white p-6 space-x-6 justify-center items-center gap-16"
-    style={{ height: '28rem' }} // Added the fixed height
+  <div
+  className="flex flex-col lg:flex-row bg-gray-800 text-white p-6 space-x-6 justify-center items-center gap-16 lg:h-[28rem] h-auto max-w-full"
+   // Adjusted the height for desktop
+     // Allow height to adjust based on content for smaller screens
   >
-
     {/* Podcast Cover Art */}
     <div className="w-64 h-auto flex-none mb-6">
-      <img 
-        src="/coverArt1.jpeg" 
-        alt="Podcast Cover Art" 
-        className="w-full h-full object-cover rounded-lg shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out" 
+      <img
+        src="/coverArt1.jpeg"
+        alt="Podcast Cover Art"
+        className="w-full h-full object-cover rounded-lg shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out"
       />
     </div>
-    
+
     {/* Right-side content (title, description, and audio player) */}
-    <div className="flex-1 flex flex-col justify-center space-y-4 max-w-xl">
-      
+    <div className="flex-1 flex flex-col justify-center space-y-4 max-w-xl w-full">
+
       {/* Title for Latest Podcast */}
-      <h2 className="text-6xl font-extrabold text-white mb-4 tracking-tight leading-tight text-center drop-shadow-lg">
-  {new Date(podcasts[0].timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
-</h2>
+      <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4 tracking-tight leading-tight text-center drop-shadow-lg">
+        {new Date(podcasts[0].timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+      </h2>
 
-{/* Podcast Info (Description only) */}
-<h3 className="text-2xl font-semibold text-gray-300 text-center mb-6">
-  {podcasts[0].Description}
-</h3>
+      {/* Podcast Info (Description only) */}
+      <h3 className="text-xl sm:text-2xl font-semibold text-gray-300 text-center mb-6">
+        {podcasts[0].Description}
+      </h3>
 
-{/* Question (Subheading) */}
-{podcasts[0].Question && (
-  <h4 className="text-xl font-medium text-indigo-400 text-center italic mt-4">
-    "{podcasts[0].Question}"
-  </h4>
-)}
+      {/* Question (Subheading) */}
+      {podcasts[0].Question && (
+        <h4 className="text-lg sm:text-xl font-medium text-indigo-400 text-center italic mt-4">
+          "{podcasts[0].Question}"
+        </h4>
+      )}
 
       {/* Custom Audio Player */}
       <div className="w-full bg-gray-700 rounded-lg shadow-lg p-6 space-y-4">
@@ -183,7 +183,7 @@ function Testing() {
             type="range"
             value={(currentTime[0] || 0) / (duration[0] || 1) * 100}
             onChange={(e) => handleProgressBarChange(0, e)}
-            className="w-3/4 h-2 bg-gray-500 rounded-full cursor-pointer hover:bg-gray-400 transition duration-300"
+            className="w-3/4 sm:w-2/3 md:w-1/2 lg:w-3/4 h-2 bg-gray-500 rounded-full cursor-pointer hover:bg-gray-400 transition duration-300"
           />
 
           {/* Time Display */}
@@ -193,7 +193,7 @@ function Testing() {
         </div>
       </div>
     </div>
-    
+
     {/* Hidden audio element */}
     <audio
       ref={el => (audioRefs.current[0] = el)}
