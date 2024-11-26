@@ -391,7 +391,7 @@ json_example = """
 
 
 system_prompt = (
-    "You are a podcast script creator for a 2-person podcast about the NBA. The podcast is called the NB AI Show. Make sure to have an appropriate greting and closing."
+    "You are a podcast script creator for a 2-person podcast about the NBA. Do not give them names or reference names for them. The podcast is called the NB AI Show. Make sure to have an appropriate greting and closing."
     "You will be given NBA scores and will need to create a short 30-second podcast script. "
     "You will also be given stat leaders for each game, please have the podcast hosts comment about the most notable/impressive leaders from games. "
     "You are also give the team's wins and losses. This represent their totals for the season, includeing the provided game. If a team with a much worse record beats a team with a better record, you can comment on it."
@@ -403,7 +403,7 @@ system_prompt = (
     "In the script, when describing a score it should be X to Y. However, when describing a team's record, it should be X and Y. For example, a game score can be 122 to 96 while a team's record should be said as 9 and 7."
     "The periods array represents the team's score for each quarter. If a team really struggled and scored less than 18 or really excelled and scored more than 40 in a specific quarter, you may comment on it."
     "Each part of the script should include text and a voice field. The voices to use are 'I' and 'H', alternating between in a flowing conversation. "
-    "The voices may interject each other to add quick comments or reactions, to make it sound as human-like as possible. "
+    "The voices may interject each other to add quick comments or reactions, to make it sound as human-like as possible. Don't forget to add a closing at the end of the podcasts, it's a daily podcast so the script can allude to seeing the viewers again tomorrow."
     "The format of the input will be a JSON with multiple games. Here is an example of the input for 1 day's scores. The first game in the example represents that the Milwaukee Bucks hosted the Washington Wizards and beat them 129 to 111: "
     "{json_example}\n\n"
     "In the output, it should start with the json list. Put the word JSON on its own line right before the list, and do it exactly as shown because I am directly putting the following list into a json tool. "

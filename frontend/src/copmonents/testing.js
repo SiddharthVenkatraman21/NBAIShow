@@ -26,16 +26,20 @@ function Testing() {
                     return podcast;
                 });
     
-                // Set the podcasts state with the fetched data
-                setPodcasts(podcastsData);
+                // Sort podcasts by timestamp in descending order
+                const sortedPodcasts = podcastsData.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    
+                // Set the podcasts state with the sorted data
+                setPodcasts(sortedPodcasts);
     
                 // Initialize the state arrays for the audio players
-                setCurrentTime(new Array(podcastsData.length).fill(0));
-                setDuration(new Array(podcastsData.length).fill(0));
-                setIsPlaying(new Array(podcastsData.length).fill(false));
+                setCurrentTime(new Array(sortedPodcasts.length).fill(0));
+                setDuration(new Array(sortedPodcasts.length).fill(0));
+                setIsPlaying(new Array(sortedPodcasts.length).fill(false));
             })
             .catch(err => console.error(err));
     }, []);
+    
 
     // Function to get the MP3 duration
 
@@ -125,48 +129,71 @@ function Testing() {
           <div className="flex-1 flex flex-col">
               {/* Upper section: Latest Podcast */}
               {podcasts.length > 0 && (
-  <div className="flex-none bg-gray-800 text-white flex flex-col justify-center items-center p-6"style={{ height: '28rem' }}>
+  <div 
+    className="flex bg-gray-800 text-white p-6 space-x-6 justify-center items-center gap-16"
+    style={{ height: '28rem' }} // Added the fixed height
+  >
+
+    {/* Podcast Cover Art */}
+    <div className="w-64 h-auto flex-none mb-6">
+      <img 
+        src="/coverArt1.jpeg" 
+        alt="Podcast Cover Art" 
+        className="w-full h-full object-cover rounded-lg shadow-2xl transform hover:scale-105 transition duration-300 ease-in-out" 
+      />
+    </div>
     
-    {/* Title for Latest Podcast */}
-    <h2 className="text-5xl font-extrabold text-indigo-600 mb-6 tracking-tight leading-tight text-center">
-  Latest Episode
-</h2> {/* Stylish title */}
+    {/* Right-side content (title, description, and audio player) */}
+    <div className="flex-1 flex flex-col justify-center space-y-4 max-w-xl">
+      
+      {/* Title for Latest Podcast */}
+      <h2 className="text-6xl font-extrabold text-white mb-4 tracking-tight leading-tight text-center drop-shadow-lg">
+  {new Date(podcasts[0].timestamp).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+</h2>
 
+{/* Podcast Info (Description only) */}
+<h3 className="text-2xl font-semibold text-gray-300 text-center mb-6">
+  {podcasts[0].Description}
+</h3>
 
-    <h3 className="text-3xl font-bold mb-4">
-      {formatDateAndDescription(podcasts[0].timestamp, podcasts[0].Description)}
-    </h3>
+{/* Question (Subheading) */}
+{podcasts[0].Question && (
+  <h4 className="text-xl font-medium text-indigo-400 text-center italic mt-4">
+    "{podcasts[0].Question}"
+  </h4>
+)}
 
-    {/* Custom Audio Player */}
-    <div className="w-full max-w-lg bg-gray-700 rounded-lg shadow-lg p-4">
-      <div className="flex items-center space-x-4">
-        {/* Play/Pause Button */}
-        <button
-          onClick={() => handlePlayButtonClick(0)}
-          className="w-10 h-10 flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white rounded-full shadow transition-transform transform hover:scale-110"
-        >
-          {isPlaying[0] ? (
-            <div className="w-3 h-3 bg-white rounded-md"></div> // Pause Icon
-          ) : (
-            <div className="w-0 h-0 border-t-4 border-r-4 border-transparent border-t-white border-r-white transform rotate-45"></div> // Play Icon
-          )}
-        </button>
+      {/* Custom Audio Player */}
+      <div className="w-full bg-gray-700 rounded-lg shadow-lg p-6 space-y-4">
+        <div className="flex items-center justify-between space-x-6">
+          {/* Play/Pause Button */}
+          <button
+            onClick={() => handlePlayButtonClick(0)}
+            className="w-12 h-12 flex items-center justify-center bg-indigo-500 hover:bg-indigo-600 text-white rounded-full shadow-lg transition-transform transform hover:scale-110"
+          >
+            {isPlaying[0] ? (
+              <div className="w-4 h-4 bg-white rounded-md"></div> // Pause Icon
+            ) : (
+              <div className="w-0 h-0 border-t-4 border-r-4 border-transparent border-t-white border-r-white transform rotate-45"></div> // Play Icon
+            )}
+          </button>
 
-        {/* Progress Bar */}
-        <input
-          type="range"
-          value={(currentTime[0] || 0) / (duration[0] || 1) * 100}
-          onChange={(e) => handleProgressBarChange(0, e)}
-          className="w-full h-2 bg-gray-500 rounded-lg cursor-pointer hover:bg-gray-400 appearance-none"
-        />
+          {/* Progress Bar */}
+          <input
+            type="range"
+            value={(currentTime[0] || 0) / (duration[0] || 1) * 100}
+            onChange={(e) => handleProgressBarChange(0, e)}
+            className="w-3/4 h-2 bg-gray-500 rounded-full cursor-pointer hover:bg-gray-400 transition duration-300"
+          />
 
-        {/* Time Display */}
-        <span className="text-sm text-gray-300">
-          {formatDuration(currentTime[0] || 0)} / {formatDuration(duration[0] || 0)}
-        </span>
+          {/* Time Display */}
+          <span className="text-sm text-gray-300">
+            {formatDuration(currentTime[0] || 0)} / {formatDuration(duration[0] || 0)}
+          </span>
+        </div>
       </div>
     </div>
-
+    
     {/* Hidden audio element */}
     <audio
       ref={el => (audioRefs.current[0] = el)}
@@ -177,6 +204,8 @@ function Testing() {
     </audio>
   </div>
 )}
+
+
 
 
 
