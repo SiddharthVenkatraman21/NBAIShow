@@ -1,0 +1,28 @@
+{
+    "games": [
+      {
+        "home_team": "Milwaukee Bucks",
+        "away_team": "Washington Wizards",
+        "home_score": 129,
+        "away_score": 111
+      },
+      {
+        "home_team": "Philadelphia 76ers",
+        "away_team": "Cleveland Cavaliers",
+        "home_score": 118,
+        "away_score": 112
+      },
+      {
+        "home_team": "Boston Celtics",
+        "away_team": "Atlanta Hawks",
+        "home_score": 123,
+        "away_score": 126
+      },
+      {
+        "home_team": "Memphis Grizzlies",
+        "away_team": "San Antonio Spurs",
+        "home_score": 110,
+        "away_score": 96
+      }
+    ]
+  }
